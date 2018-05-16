@@ -64,6 +64,12 @@ export class LocalStorageService {
         return this.set(key, value);
     }
 
+    public addWithPrefix (key: string, value: any, prefix: string): boolean {
+        this.setPrefix(prefix);
+
+        return this.add(key, value);
+    }
+
     public clearAll (regularExpression?: string): boolean {
         // Setting both regular expressions independently
         // Empty strings result in catchall RegExp
@@ -91,6 +97,12 @@ export class LocalStorageService {
         return true;
     }
 
+    public clearAllWithPrefix (prefix: string, regularExpression?: string): boolean {
+        this.setPrefix(prefix);
+
+        return this.clearAll(regularExpression);
+    }
+
     public deriveKey (key: string): string {
         return `${this.prefix}${key}`;
     }
@@ -112,6 +124,12 @@ export class LocalStorageService {
         } catch (e) {
             return null;
         }
+    }
+
+    public getWithPrefix <T> (key: string, prefix: string): T {
+        this.setPrefix(prefix);
+
+        return this.get(key);
     }
 
     public getStorageType (): string {
@@ -140,6 +158,12 @@ export class LocalStorageService {
         return keys;
     }
 
+    public keysWithPrefix (prefix: string): Array<string> {
+        this.setPrefix(prefix);
+
+        return this.keys();
+    }
+
     public length (): number {
         let count = 0;
         let storage = this.webStorage;
@@ -149,6 +173,12 @@ export class LocalStorageService {
             }
         }
         return count;
+    }
+
+    public lengthWithPrefix (prefix: string): number {
+        this.setPrefix(prefix);
+
+        return this.length();
     }
 
     public remove (...keys: Array<string>): boolean {
@@ -173,6 +203,12 @@ export class LocalStorageService {
             }
         });
         return result;
+    }
+
+    public removeWithPrefix (...keys: Array<string>): boolean {
+        this.setPrefix(this.prefix);
+
+        return this.remove(...keys);
     }
 
     public set (key: string, value: any): boolean {
@@ -204,6 +240,12 @@ export class LocalStorageService {
             return false;
         }
         return true;
+    }
+
+    public setWithPrefix (key: string, value: any, prefix: string): boolean {
+        this.setPrefix(prefix);
+
+        return this.set(key, value);
     }
 
     private checkSupport (): boolean {
