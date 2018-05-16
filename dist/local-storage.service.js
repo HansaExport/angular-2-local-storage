@@ -55,6 +55,10 @@ var LocalStorageService = /** @class */ (function () {
         }
         return this.set(key, value);
     };
+    LocalStorageService.prototype.addWithPrefix = function (key, value, prefix) {
+        this.setPrefix(prefix);
+        return this.add(key, value);
+    };
     LocalStorageService.prototype.clearAll = function (regularExpression) {
         // Setting both regular expressions independently
         // Empty strings result in catchall RegExp
@@ -79,6 +83,10 @@ var LocalStorageService = /** @class */ (function () {
         }
         return true;
     };
+    LocalStorageService.prototype.clearAllWithPrefix = function (prefix, regularExpression) {
+        this.setPrefix(prefix);
+        return this.clearAll(regularExpression);
+    };
     LocalStorageService.prototype.deriveKey = function (key) {
         return "" + this.prefix + key;
     };
@@ -98,6 +106,10 @@ var LocalStorageService = /** @class */ (function () {
         catch (e) {
             return null;
         }
+    };
+    LocalStorageService.prototype.getWithPrefix = function (key, prefix) {
+        this.setPrefix(prefix);
+        return this.get(key);
     };
     LocalStorageService.prototype.getStorageType = function () {
         return this.storageType;
@@ -123,6 +135,10 @@ var LocalStorageService = /** @class */ (function () {
         }
         return keys;
     };
+    LocalStorageService.prototype.keysWithPrefix = function (prefix) {
+        this.setPrefix(prefix);
+        return this.keys();
+    };
     LocalStorageService.prototype.length = function () {
         var count = 0;
         var storage = this.webStorage;
@@ -132,6 +148,10 @@ var LocalStorageService = /** @class */ (function () {
             }
         }
         return count;
+    };
+    LocalStorageService.prototype.lengthWithPrefix = function (prefix) {
+        this.setPrefix(prefix);
+        return this.length();
     };
     LocalStorageService.prototype.remove = function () {
         var _this = this;
@@ -160,6 +180,14 @@ var LocalStorageService = /** @class */ (function () {
             }
         });
         return result;
+    };
+    LocalStorageService.prototype.removeWithPrefix = function () {
+        var keys = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            keys[_i] = arguments[_i];
+        }
+        this.setPrefix(this.prefix);
+        return this.remove.apply(this, keys);
     };
     LocalStorageService.prototype.set = function (key, value) {
         // Let's convert `undefined` values to `null` to get the value consistent
@@ -190,6 +218,10 @@ var LocalStorageService = /** @class */ (function () {
             return false;
         }
         return true;
+    };
+    LocalStorageService.prototype.setWithPrefix = function (key, value, prefix) {
+        this.setPrefix(prefix);
+        return this.set(key, value);
     };
     LocalStorageService.prototype.checkSupport = function () {
         try {
